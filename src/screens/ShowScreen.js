@@ -10,9 +10,9 @@ const ShowScreen = ({ navigation }) => {
     const blogPost = state.find(blogPost => blogPost.id === navigation.getParam('id'));
 
     return (
-        <View>
-            <Text>{blogPost.title}</Text>
-            <Text>{blogPost.content}</Text>
+        <View style={styles.wrapper}>
+            <Text style={styles.title}>{blogPost.title}</Text>
+            <Text style={styles.content}>{blogPost.content}</Text>
         </View>
     )
 }
@@ -35,5 +35,14 @@ const styles = StyleSheet.create({
     editIcon: {
         fontSize: 30,
         marginRight: 15,
+    },
+    title: {
+        fontSize: 30
+    },
+    content: {
+        fontSize: 16
+    },
+    wrapper: {
+        padding: 10
     }
 });
