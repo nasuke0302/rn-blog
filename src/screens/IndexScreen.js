@@ -3,28 +3,39 @@ import { Text, View, FlatList, Button, StyleSheet } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
 import { Context } from '../context/BlogContext';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default () => {
-    const { state, addBlogPost } = useContext(Context);
+const IndexScreen = ({ navigation }) => {
+    const { state, deleteBlogPost } = useContext(Context);
 
     return (
         <View>
-            <Button
-                title='Add Post'
-                onPress={addBlogPost}
-            />
             <FlatList
                 data={state}
-                keyExtractor={blogPost => blogPost.title}
+                keyExtractor={blogPost => blogPost.id}
                 renderItem={({ item }) => {
-                    return <View style={styles.row}>
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Feather name='trash' style={styles.icon}/>
-                    </View>
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate('Show', { id: item.id })}>
+                            <View style={styles.row}>
+                                <Text style={styles.title}>{item.title}</Text>
+                                <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+                                    <Feather name='trash' style={styles.icon} />
+                                </TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>
+                    )
                 }}
             />
         </View>
     )
+}
+
+IndexScreen.navigationOptions = ({ navigation }) => {
+    return {
+        headerRight: <TouchableOpacity onPress={() => navigation.navigate('Create')} >
+            <Feather name='plus' size={30} style={styles.addIcon} />
+        </TouchableOpacity>
+    }
 }
 
 const styles = StyleSheet.create({
@@ -41,5 +52,11 @@ const styles = StyleSheet.create({
     },
     icon: {
         fontSize: 24
+    },
+    addIcon: {
+        fontSize: 30,
+        marginRight: 15,
     }
 });
+
+export default IndexScreen;
